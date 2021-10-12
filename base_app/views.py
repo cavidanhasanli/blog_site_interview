@@ -155,7 +155,7 @@ def search_result_view(request):
     context = {}
     if request.method == 'POST':
         searched = request.POST.get('searched', False)
-        posts_queryset = PostModel.objects.filter(Q(postmodel__tag_name=searched) | Q(post_title=searched) | Q(post_text=searched),
+        posts_queryset = PostModel.objects.filter(Q(postmodel__tag_name=searched) | Q(post_title=searched) | Q(post_text__in=searched),
                                                   user_id=request.user,
                                                   is_activate=True)
         print(posts_queryset)
