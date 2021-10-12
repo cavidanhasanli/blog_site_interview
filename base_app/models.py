@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from ckeditor_uploader.fields import RichTextUploadingField
 
 # Create your models here.
 
@@ -30,15 +31,21 @@ class PostModel(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     post_title = models.CharField(max_length=100)
     post_subtitle = models.CharField(max_length=255)
-    tags = models.CharField(max_length=255)
     post_date = models.DateField(auto_now=True)
-    post_text = models.TextField(null=True, blank=True)
+    post_text = RichTextUploadingField(null=True, blank=True)
     post_head_image = models.ImageField(upload_to='post_image/')
     is_activate = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.post_title} / {self.post_date}'
 
+
+class PostTags(models.Model):
+    post_id = models.ForeignKey('PostModel', on_delete=models.CASCADE,related_name='postmodel')
+    tag_name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f'{self.post_id}/{self.tag_name}'
 
 class PostImageModel(models.Model):
     post_id = models.ForeignKey('PostModel', on_delete=models.CASCADE)

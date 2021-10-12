@@ -16,15 +16,35 @@
         </header>
     <form method="POST" action="{% url 'post_create_page' %}" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.media }}
+        {{ form.post_title }}
+        {{ form.post_subtitle }}
+        {{ form.post_head_image }}
+        {{ form.post_text | safe }}
         {% if messages %}
                 {% for message in messages %}
                     <div>{{ message }}</div>
                 {% endfor %}
             {% endif %}
+
+         <label>Post tags</label>
+        <div id="tags">
+             <input type="text" name="tags[]" value="" multiple>
+        </div>
+        <input id="add_tag" type="submit" value="add+">
+        <br>
+        <br>
         <label>Post images all</label>
         <input type="file" name="images_all" value="" multiple>
+        <br>
+        <br>
         <input type="submit" value="Save Post">
     </form>
+
+    <script>
+        $('#add_tag').on('click', function (){
+            $('#tags').append('<input type="text" class="tag_copy" name="tags[]" value="" multiple>')
+        })
+    </script>
 
 {% endblock %}
